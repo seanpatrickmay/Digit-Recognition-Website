@@ -7,6 +7,10 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torchvision.utils import save_image
 import ssl
+from ConvolutionalNeuralNetwork import ConvolutionalNeuralNetwork
+
+# Change this when testing, etc.
+MODEL_PATH = 'convolutional_model.pth'
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -43,47 +47,6 @@ device = (
         else "cpu"
 )
 print(f"Using {device} as device")
-
-class ConvolutionalNeuralNetwork(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.flatten = nn.Flatten()
-        self.convolutional_relu_stack = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=4, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=4, out_channels=16, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            nn.Conv2d(in_channels=16, out_channels=64, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=64, out_channels=256, kernel_size=3, padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-        )
-
-        self.linear_stack = nn.Sequential(
-            nn.Linear(7 * 7 * 256, 4096),
-            nn.ReLU(),
-            nn.Linear(4096, 2048),
-            nn.ReLU(),
-            nn.Linear(2048, 1024),
-            nn.ReLU(),
-            nn.Linear(1024, 512),
-            nn.ReLU(),
-            nn.Linear(512, 256),
-            nn.ReLU(),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Linear(64, 10),
-        )
-
-    def forward(self, x):
-        x = self.convolutional_relu_stack(x)
-        x = self.flatten(x)
-        logits = self.linear_stack(x)
-        return logits
 
 convolutional_model = ConvolutionalNeuralNetwork().to(device)
 print(convolutional_model)
@@ -126,9 +89,9 @@ def test(dataloader, model, loss_fn):
     print(f"Average Loss: {average_loss}")
     return accuracy, average_loss
 
-MAX_EPOCHS = 20
+MAX_EPOCHS = 50
 
-def train_epochs(epochs, model, loss_fn, optimizer, forgiveness=1, minimum_epochs=3):
+def train_epochs(epochs, model, loss_fn, optimizer, forgiveness=1, minimum_epochs=5):
     losses = []
     accuracies = []
     average_loss_min = float('inf')
@@ -162,10 +125,10 @@ RETRAIN_MODELS = True
 if RETRAIN_MODELS:
     convolutional_losses, convolutional_accuracies = train_epochs(MAX_EPOCHS, convolutional_model, loss_fn, convolutional_optimizer)
 
-    torch.save(convolutional_model.state_dict(), "convolutional_model.pth")
+    torch.save(convolutional_model.state_dict(), MODEL_PATH)
 else:
     convolutional_model = ConvolutionalNeuralNetwork().to(device)
-    convolutional_model.load_state_dict(torch.load("convolutional_model.pth", weights_only=True))
+    convolutional_model.load_state_dict(torch.load(MODEL_PATH, weights_only=True))
 
 convolutional_accuracy, convolutional_loss = test(test_dataloader, convolutional_model, loss_fn)
 
@@ -184,4 +147,4 @@ def save_accuracy_loss_graph(name, accuracy, loss):
 
 print(convolutional_accuracies, convolutional_losses)
 
-save_accuracy_loss_graph('convolutional', convolutional_accuracies, convolutional_losses)
+#save_accuracy_loss_graph('convolutional', convolutional_accuracies, convolutional_losses)

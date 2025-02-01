@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Portfolio</title>
+	<link rel="stylesheet" href="styles.css">
+	<style>
+	/* Additional styling for portfolio layout */
+	    .portfolio {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 20px;
+	    }
+
+	.project-card {
+	    background-color: #1e1e1e;
+	    color: white;
+	    border: 1px solid #f5deb3;
+	    border-radius: 10px;
+	    width: 90%;
+	    max-width: 400px;
+	    margin: 15px;
+	    padding: 20px;
+	    text-align: center;
+	    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+	    transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.project-card:hover {
+	    transform: translateY(-10px);
+	    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.8);
+	}
+
+	.project-card h2 {
+	    margin-top: 0;
+	    font-size: 24px;
+	    color: #f5deb3;
+	}
+
+	.project-card p {
+	    font-size: 16px;
+	    color: #d3d3d3;
+	}
+
+	.project-card a {
+	    display: inline-block;
+	    margin-top: 15px;
+	    text-decoration: none;
+	    font-size: 18px;
+	    color: black;
+	    background-color: #f5deb3;
+	    padding: 10px 20px;
+	    border-radius: 5px;
+	    font-weight: bold;
+	    transition: background-color 0.3s ease, color 0.3s ease;
+	}
+
+	.project-card a:hover {
+	    background-color: #e6d2a5;
+	}
+	</style>
+    </head>
+    <body>
+	<div class="portfolio">
+	    <!-- Portfolio Header -->
+	    <h1>Welcome to My Portfolio</h1>
+	    <p>Explore my projects below and see what I’ve been working on!</p>
+
+	    <!-- Project Cards -->
+	    <div class="project-card">
+		<h2>Digit Recognizer</h2>
+		<p>Draw a digit and see if the AI can recognize it! A fun, interactive project using machine learning.</p>
+		<a href="drawing.html">View Project</a>
+	    </div>
+
+	    <div class="project-card">
+		<h2>Project 2: Coming Soon</h2>
+		<p>This placeholder represents another exciting project in development. Stay tuned!</p>
+		<a href="#">Learn More</a>
+	    </div>
+
+	    <div class="project-card">
+		<h2>Project 3: Coming Soon</h2>
+		<p>Another placeholder for future additions to my portfolio. Keep an eye out for updates!</p>
+		<a href="#">Learn More</a>
+	    </div>
+	</div>
+    </body>
+</html>
+
